@@ -1,0 +1,7 @@
+[project]
+name = "users_postalcode_register"
+version = "0.0.1"
+dependencies = [
+    "Django==4.2",
+    "djangorestframework==3.14.0",
+]
