@@ -4,6 +4,13 @@ class Address(models.Model):
     city = models.CharField(max_length=50)
     postal_code = models.CharField(max_length=10)
 
-class User(models.Model):
+    def __str__(self):
+        return f"{self.postal_code} - {self.city}"
+
+
+class UserWithAddress(models.Model):
     username = models.CharField(max_length=200)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username
