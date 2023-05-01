@@ -7,7 +7,10 @@ from rest_framework import status
 
 
 class UserList(APIView):
+    """Class view meant to respond at /users/."""
+
     def get(self, request, format=None):
+        """Get all users in the DB."""
         users = UserWithAddress.objects.all()
         processed_users = []
         for user in users:
@@ -16,6 +19,7 @@ class UserList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """Create a new user in the DB."""
         serializer = UsersAdressSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -24,16 +28,17 @@ class UserList(APIView):
 
 
 class UserDetail(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
+    """Class view meant to respond at /users/<id>/."""
+
     def _get_object(self, pk):
+        """Get a single user based on the Primary Key."""
         try:
             return UserWithAddress.objects.get(pk=pk)
         except UserWithAddress.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
+        """Get a single user from the DB."""
         user = self._get_object(pk)
         processed_user = UserAndAdress(user)
         serializer = UsersAdressSerializer(processed_user)
