@@ -1,18 +1,9 @@
 from users_postalcode.models import UserWithAddress
-from users_postalcode.serializers import UsersAdressSerializer
+from users_postalcode.serializers import UsersAdressSerializer, UserAndAdress
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-
-def convert_db_user_to_serializer_user(user):
-    processed_user = {}
-    processed_user['id'] = user.id
-    processed_user['username'] = user.username
-    processed_user['postal_code'] = user.address.postal_code
-    processed_user['city'] = user.address.city
-    return processed_user
 
 
 class UserList(APIView):
@@ -20,7 +11,7 @@ class UserList(APIView):
         users = UserWithAddress.objects.all()
         processed_users = []
         for user in users:
-            processed_users.append(convert_db_user_to_serializer_user(user))
+            processed_users.append(UserAndAdress(user))
         serializer = UsersAdressSerializer(processed_users, many=True)
         return Response(serializer.data)
 
@@ -44,6 +35,6 @@ class UserDetail(APIView):
 
     def get(self, request, pk, format=None):
         user = self._get_object(pk)
-        processed_user = convert_db_user_to_serializer_user(user)
+        processed_user = UserAndAdress(user)
         serializer = UsersAdressSerializer(processed_user)
         return Response(serializer.data)

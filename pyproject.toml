@@ -4,4 +4,6 @@ version = "0.0.1"
 dependencies = [
     "Django==4.2",
     "djangorestframework==3.14.0",
+    "requests==2.29.0",
+    "python-dotenv==1.0.0",
 ]
